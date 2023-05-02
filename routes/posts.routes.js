@@ -2,8 +2,8 @@ const express = require("express");
 const router = express.Router();
 
 const PostsController = require("../controllers/posts.controller");
-const authMiddleware = require("../middlewares/auth-middleware");
 const postsController = new PostsController();
+const authMiddleware = require("../middlewares/auth-middleware");
 
 // 게시글 작성 API
 router.post("/", authMiddleware, postsController.createPost);
