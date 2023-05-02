@@ -29,17 +29,41 @@ class PostService {
   };
 
   findOnePost = async (postId) => {
-    const targetedPost = await this.postRepository.findOnePost(postId);
+    const targetPost = await this.postRepository.findOnePost(postId);
 
     return {
-      postId: targetedPost.postId,
-      userId: targetedPost.UserId,
-      nickname: targetedPost.User.nickname,
-      title: targetedPost.title,
-      content: targetedPost.content,
-      createdAt: targetedPost.createdAt,
-      updatedAt: targetedPost.updatedAt,
+      postId: targetPost.postId,
+      userId: targetPost.UserId,
+      nickname: targetPost.User.nickname,
+      title: targetPost.title,
+      content: targetPost.content,
+      createdAt: targetPost.createdAt,
+      updatedAt: targetPost.updatedAt,
     };
+  };
+
+  findPostForUpdateAndDelete = async (userId, postId) => {
+    const post = await this.postRepository.findPostForUpdateAndDelete(
+      userId,
+      postId
+    );
+
+    return post;
+  };
+
+  updatePost = async (title, content, postId) => {
+    const updatePostData = await this.postRepository.updatePost(
+      title,
+      content,
+      postId
+    );
+    return updatePostData;
+  };
+
+  deletePost = async (postId) => {
+    const deletePostData = await this.postRepository.deletePost(postId);
+
+    return deletePostData;
   };
 }
 

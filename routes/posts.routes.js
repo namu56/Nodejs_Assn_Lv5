@@ -12,12 +12,12 @@ router.post("/", authMiddleware, postsController.createPost);
 router.get("/", postsController.getPosts);
 
 // 게시글 상세 조회 API
-router.get("/:postId", postsController.targetedPost);
+router.get("/:postId", postsController.targetPost);
 
-// // 게시글 수정 API
-// router.put("/:postId", authMiddleware, postsController);
+// 게시글 수정 API
+router.put("/:postId", authMiddleware, postsController.updatePost);
 
-// // 게시글 삭제 API
-// router.put("/:postId", authMiddleware, postsController);
+// 게시글 삭제 API
+router.delete("/:postId", authMiddleware, postsController.deletePost);
 
 module.exports = router;
