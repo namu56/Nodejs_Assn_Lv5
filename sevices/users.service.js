@@ -20,10 +20,9 @@ class UserService {
   };
 
   loginUser = async (nickname) => {
-    const loginUserData = await this.userRepository.loginUser(nickname);
+    const loginUserData = await this.userRepository.findUser(nickname);
 
     const loginToken = jwt.sign({ userId: loginUserData.userId }, "secret-key");
-    console.log(loginToken);
 
     return loginToken;
   };

@@ -15,12 +15,6 @@ class UserRepository {
 
     return createUserData;
   };
-
-  loginUser = async (nickname) => {
-    const loginUserData = await Users.findOne({ where: { nickname } });
-
-    return loginUserData;
-  };
 }
 
 module.exports = UserRepository;
