@@ -14,8 +14,8 @@ router.put("/:postId/like", authMiddleware, postsController.putLike);
 // 게시글 목록 조회 API
 router.get("/", postsController.getPosts);
 
-// // 좋아요 목록 조회 API
-// router.get("/like", postsController);
+// 게시글 좋아요 목록 조회 API
+router.get("/like", authMiddleware, postsController.getPostsOfLikes);
 
 // 게시글 상세 조회 API
 router.get("/:postId", postsController.targetPost);

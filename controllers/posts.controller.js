@@ -49,6 +49,18 @@ class PostsController {
     }
   };
 
+  // 게시글 좋아요 목록 조회 API
+  getPostsOfLikes = async (req, res, next) => {
+    const { userId } = res.locals.user;
+    try {
+      const posts = await this.postService.findPostsOfLike(userId);
+      return res.status(200).json({ posts });
+    } catch (error) {
+      console.error(error);
+      throw new Error("400, 좋아요 게시글 조회에 실패하였습니다.");
+    }
+  };
+
   // 게시글 상세 조회 API
   targetPost = async (req, res, next) => {
     const { postId } = req.params;
@@ -103,6 +115,7 @@ class PostsController {
     }
   };
 
+  // 게시글 삭제 API
   deletePost = async (req, res, next) => {
     const { userId } = res.locals.user;
     const { postId } = req.params;
@@ -128,6 +141,7 @@ class PostsController {
     }
   };
 
+  // 게시글 좋아요 API
   putLike = async (req, res, next) => {
     const { userId } = res.locals.user;
     const { postId } = req.params;

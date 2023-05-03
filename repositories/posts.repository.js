@@ -1,4 +1,4 @@
-const { Users, Posts } = require("../models");
+const { Users, Posts, Likes } = require("../models");
 const { Op } = require("sequelize");
 class PostRepository {
   createPost = async (userId, title, content) => {
@@ -23,6 +23,33 @@ class PostRepository {
       order: [["createdAt", "DESC"]],
     });
     return allPost;
+  };
+
+  findPostsOfLike = async (userId) => {
+    const postsOfLike = await Posts.findAll({
+      attributes: [
+        "postId",
+        "UserId",
+        "title",
+        "likes",
+        "createdAt",
+        "updatedAt",
+      ],
+      include: [
+        {
+          model: Users,
+          attributes: ["nickname"],
+        },
+        {
+          model: Likes,
+          attributes: [],
+          where: { UserId: userId },
+        },
+      ],
+      order: [["likes", "DESC"]],
+      where: { UserId: userId },
+    });
+    return postsOfLike;
   };
 
   findOnePost = async (postId) => {
