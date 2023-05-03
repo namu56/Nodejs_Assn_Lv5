@@ -1,5 +1,6 @@
 const { Users, Posts, Likes } = require("../models");
 const { Op } = require("sequelize");
+
 class PostRepository {
   createPost = async (userId, title, content) => {
     const createPostData = await Posts.create({
@@ -47,7 +48,6 @@ class PostRepository {
         },
       ],
       order: [["likes", "DESC"]],
-      where: { UserId: userId },
     });
     return postsOfLike;
   };
