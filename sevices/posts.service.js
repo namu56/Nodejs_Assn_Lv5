@@ -65,6 +65,18 @@ class PostService {
 
     return deletePostData;
   };
+
+  incrementLike = async (postId) => {
+    const incrementLikeData = await this.postRepository.incrementLike(postId);
+
+    return incrementLikeData;
+  };
+
+  decrementLike = async (postId) => {
+    const decrementLikeData = await this.postRepository.decrementLike(postId);
+
+    return decrementLikeData;
+  };
 }
 
 module.exports = PostService;

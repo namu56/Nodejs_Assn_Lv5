@@ -1,7 +1,9 @@
 const PostService = require("../sevices/posts.service");
+const LikeService = require("../sevices/likes.service");
 
 class PostsController {
   postService = new PostService();
+  likeService = new LikeService();
 
   // 게시글 작성 API
   createPost = async (req, res, next) => {
@@ -123,6 +125,41 @@ class PostsController {
     } catch (error) {
       console.error(error);
       throw new Error("400, 게시글 삭제에 실패하였습니다.");
+    }
+  };
+
+  putLike = async (req, res, next) => {
+    const { userId } = res.locals.user;
+    const { postId } = req.params;
+    const post = await this.postService.findOnePost(postId);
+    const like = await this.likeService.findOneLike(userId);
+
+    if (!post) {
+      throw new Error("404, 게시글이 존재하지 않습니다.");
+    }
+    try {
+      if (!like) {
+        const createLikeData = await this.likeService.createLike(
+          userId,
+          postId
+        );
+        const incrementLikeData = await this.postService.incrementLike(postId);
+        return res
+          .status(200)
+          .json({ message: "게시글의 좋아요을 등록하였습니다." });
+      } else {
+        const deleteLikeData = await this.likeService.deleteLike(
+          userId,
+          postId
+        );
+        const decrementLikeData = await this.postService.decrementLike(postId);
+        return res
+          .status(200)
+          .json({ message: "게시글의 좋아요를 취소하였습니다." });
+      }
+    } catch (error) {
+      console.error(error);
+      throw new Error("400, 게시글 좋아요에 실패하였습니다.");
     }
   };
 }

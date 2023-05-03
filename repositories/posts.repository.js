@@ -49,7 +49,7 @@ class PostRepository {
 
   findPostForUpdateAndDelete = async (userId, postId) => {
     const post = await Posts.findOne({
-      where: { [Op.and]: [{ UserId: userId }, [{ postId }]] },
+      where: { [Op.and]: [{ UserId: userId }, { postId }] },
     });
 
     return post;
@@ -67,6 +67,22 @@ class PostRepository {
     const deletePostData = await Posts.destroy({ where: { postId } });
 
     return deletePostData;
+  };
+
+  incrementLike = async (postId) => {
+    const incrementLikeData = await Posts.increment("likes", {
+      where: { postId },
+    });
+
+    return incrementLikeData;
+  };
+
+  decrementLike = async (postId) => {
+    const decrementLikeData = await Posts.decrement("likes", {
+      where: { postId },
+    });
+
+    return decrementLikeData;
   };
 }
 
