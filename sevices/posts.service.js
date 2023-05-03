@@ -58,8 +58,8 @@ class PostService {
     };
   };
 
-  findPostForUpdateAndDelete = async (userId, postId) => {
-    const post = await this.postRepository.findPostForUpdateAndDelete(
+  findPostForUpdateOrDelete = async (userId, postId) => {
+    const post = await this.postRepository.findPostForUpdateOrDelete(
       userId,
       postId
     );

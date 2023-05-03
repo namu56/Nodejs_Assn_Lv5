@@ -119,7 +119,7 @@ class PostsController {
   deletePost = async (req, res, next) => {
     const { userId } = res.locals.user;
     const { postId } = req.params;
-    const post = await this.postService.findPostForUpdateAndDelete(
+    const post = await this.postService.findPostForUpdateOrDelete(
       userId,
       postId
     );

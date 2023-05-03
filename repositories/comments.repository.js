@@ -1,12 +1,14 @@
 const { Users, Posts, Comments } = require("../models");
 
 class CommentRepository {
+  // postId에 해당하는 게시물 찾기
   findOnePost = async (postId) => {
     const post = await Posts.findByPk(postId);
 
     return post;
   };
 
+  // 댓글 생성
   createComment = async (userId, postId, comment) => {
     const createCommentData = await Comments.create({
       UserId: userId,
@@ -16,6 +18,7 @@ class CommentRepository {
     return createCommentData;
   };
 
+  // 모든 댓글 찾기
   findAllComment = async () => {
     const allComment = await Comments.findAll({
       attributes: ["commentId", "UserId", "comment", "createdAt", "updatedAt"],

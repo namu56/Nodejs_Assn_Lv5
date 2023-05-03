@@ -1,15 +1,13 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "My API",
+    "title": "Nodejs_Assn_Lv5",
     "description": "Description",
     "version": "1.0.0"
   },
   "host": "localhost:3000",
   "basePath": "/",
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "paths": {
     "/users/signup": {
       "post": {
