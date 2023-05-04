@@ -28,25 +28,12 @@ class PostService {
     });
   };
 
-  findPostsOfLike = async (userId) => {
-    const postsOfLike = await this.postRepository.findPostsOfLike(userId);
-
-    return postsOfLike.map((post) => {
-      return {
-        postId: post.postId,
-        userId: post.UserId,
-        nickname: post.User.nickname,
-        title: post.title,
-        createdAt: post.createdAt,
-        updatedAt: post.updatedAt,
-        likes: post.likes,
-      };
-    });
-  };
-
   findOnePost = async (postId) => {
     const targetPost = await this.postRepository.findOnePost(postId);
 
+    if (!targetPost) {
+      throw new Error("게시글이 존재하지 않습니다.");
+    }
     return {
       postId: targetPost.postId,
       userId: targetPost.UserId,
@@ -80,18 +67,6 @@ class PostService {
     const deletePostData = await this.postRepository.deletePost(postId);
 
     return deletePostData;
-  };
-
-  incrementLike = async (postId) => {
-    const incrementLikeData = await this.postRepository.incrementLike(postId);
-
-    return incrementLikeData;
-  };
-
-  decrementLike = async (postId) => {
-    const decrementLikeData = await this.postRepository.decrementLike(postId);
-
-    return decrementLikeData;
   };
 }
 

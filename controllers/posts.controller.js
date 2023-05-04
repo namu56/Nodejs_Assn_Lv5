@@ -26,11 +26,7 @@ class PostsController {
     }
 
     try {
-      const createPostData = await this.postService.createPost(
-        userId,
-        title,
-        content
-      );
+      await this.postService.createPost(userId, title, content);
       return res.status(201).json({ message: "게시글 작성에 성공하였습니다." });
     } catch (error) {
       console.error(error);
@@ -69,7 +65,7 @@ class PostsController {
       return res.status(200).json({ post });
     } catch (error) {
       console.error(error);
-      throw new Error("400, 게시글 조회에 실패하였습니다.");
+      return res.status(400).json({ message: "게시글 조회에 실패하였습니다." });
     }
   };
 
@@ -78,7 +74,7 @@ class PostsController {
     const { userId } = res.locals.user;
     const { postId } = req.params;
     const { title, content } = req.body;
-    const post = await this.postService.findPostForUpdateAndDelete(
+    const post = await this.postService.findPostForUpdateOrDelete(
       userId,
       postId
     );
@@ -96,18 +92,14 @@ class PostsController {
     }
 
     if (!post) {
-      throw new Error("404, 게시글이 정상적으로 수정되지 않았습니다.");
+      throw new Error("404, 게시글이 존재하지 않습니다.");
     }
     if (userId !== post.UserId) {
       throw new Error("403, 게시글의 수정 권한이 존재하지 않습니다.");
     }
 
     try {
-      const updatePostData = await this.postService.updatePost(
-        title,
-        content,
-        postId
-      );
+      await this.postService.updatePost(title, content, postId);
       return res.status(200).json({ message: "게시글을 수정하였습니다." });
     } catch (error) {
       console.error(error);
@@ -133,7 +125,7 @@ class PostsController {
     }
 
     try {
-      const deletePostData = await this.postService.deletePost(postId);
+      await this.postService.deletePost(postId);
       return res.status(200).json({ message: "게시글을 삭제하였습니다." });
     } catch (error) {
       console.error(error);
@@ -141,41 +133,35 @@ class PostsController {
     }
   };
 
-  // 게시글 좋아요 API
-  putLike = async (req, res, next) => {
-    const { userId } = res.locals.user;
-    const { postId } = req.params;
-    const post = await this.postService.findOnePost(postId);
-    const like = await this.likeService.findOneLike(userId);
+  // // 게시글 좋아요 API
+  // putLike = async (req, res, next) => {
+  //   const { userId } = res.locals.user;
+  //   const { postId } = req.params;
+  //   const post = await this.postService.findOnePost(postId);
+  //   const existLike = await this.likeService.findOneLike(userId);
 
-    if (!post) {
-      throw new Error("404, 게시글이 존재하지 않습니다.");
-    }
-    try {
-      if (!like) {
-        const createLikeData = await this.likeService.createLike(
-          userId,
-          postId
-        );
-        const incrementLikeData = await this.postService.incrementLike(postId);
-        return res
-          .status(200)
-          .json({ message: "게시글의 좋아요을 등록하였습니다." });
-      } else {
-        const deleteLikeData = await this.likeService.deleteLike(
-          userId,
-          postId
-        );
-        const decrementLikeData = await this.postService.decrementLike(postId);
-        return res
-          .status(200)
-          .json({ message: "게시글의 좋아요를 취소하였습니다." });
-      }
-    } catch (error) {
-      console.error(error);
-      throw new Error("400, 게시글 좋아요에 실패하였습니다.");
-    }
-  };
+  //   if (!post) {
+  //     throw new Error("404, 게시글이 존재하지 않습니다.");
+  //   }
+  //   try {
+  //     if (!existLike) {
+  //       await this.likeService.createLike(userId, postId);
+  //       await this.postService.incrementLike(postId);
+  //       return res
+  //         .status(200)
+  //         .json({ message: "게시글의 좋아요을 등록하였습니다." });
+  //     } else {
+  //       await this.likeService.deleteLike(userId, postId);
+  //       await this.postService.decrementLike(postId);
+  //       return res
+  //         .status(200)
+  //         .json({ message: "게시글의 좋아요를 취소하였습니다." });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     throw new Error("400, 게시글 좋아요에 실패하였습니다.");
+  //   }
+  // };
 }
 
 module.exports = PostsController;

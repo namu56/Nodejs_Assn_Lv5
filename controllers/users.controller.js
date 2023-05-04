@@ -29,10 +29,7 @@ class UsersController {
         throw new Error("412, 중복된 닉네임입니다.");
       }
 
-      const createUserData = await this.userService.createSignup(
-        nickname,
-        password
-      );
+      await this.userService.createSignup(nickname, password);
       res.status(201).json({ message: "회원 가입에 성공하였습니다." });
     } catch (error) {
       console.error(error);

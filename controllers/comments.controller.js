@@ -19,11 +19,7 @@ class CommentsController {
     }
 
     try {
-      const createCommentData = await this.commentService.createComment(
-        userId,
-        postId,
-        comment
-      );
+      await this.commentService.createComment(userId, postId, comment);
       return res.status(200).json({ message: "댓글을 생성하였습니다." });
     } catch (error) {
       console.error(error);
@@ -63,10 +59,7 @@ class CommentsController {
     }
 
     try {
-      const updateCommentData = await this.commentService.updateComment(
-        comment,
-        commentId
-      );
+      await this.commentService.updateComment(comment, commentId);
       return res.status(200).json({ message: "댓글을 수정하였습니다." });
     } catch (error) {
       console.error(error);
@@ -92,9 +85,7 @@ class CommentsController {
     }
 
     try {
-      const deleteCommentData = await this.commentService.deleteComment(
-        commentId
-      );
+      await this.commentService.deleteComment(commentId);
       return res.status(200).json({ message: "댓글을 삭제하였습니다." });
     } catch (error) {
       console.error(error);
